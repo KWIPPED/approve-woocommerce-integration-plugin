@@ -1,0 +1,40 @@
+{
+	"name": "Woocommerce APPROVE Plugin",
+	"version": "1.1",
+	"download_url": "https://github.com/KWIPPED/wordpress_woocommerce_approve_plugin",
+
+	"homepage": "http://kwipped.com/",
+	"requires": "4.5",
+	"tested": "4.8",
+	"last_updated": "2019-04-11 16:17:00",
+	"upgrade_notice": "This update contains several bug fixes",
+
+	"author": "Wellington Souza",
+	"author_homepage": "http://kwipped.com/",
+
+	"sections": {
+		"description": "Provides APPROVE information available in Woocommerce sites.",
+		"installation": "Click on 'update' to get the latest version.",
+		"changelog": "Changelog. Added updater.",
+		"custom_section": "APPROVE provides information."
+	},
+	
+	"icons" : {
+		"1x" : "http://w-shadow.com/files/external-update-example/assets/icon-128x128.png",
+		"2x" : "http://w-shadow.com/files/external-update-example/assets/icon-256x256.png"
+    },
+
+	"banners": {
+		"low": "http://w-shadow.com/files/external-update-example/assets/banner-772x250.png",
+		"high": "http://w-shadow.com/files/external-update-example/assets/banner-1544x500.png"
+	},
+
+	"translations": [
+	],
+
+	"rating": 90,
+	"num_ratings": 123,
+
+	"downloaded": 1234,
+	"active_installs": 12345
+}

@@ -3,7 +3,7 @@
 	Plugin Name: APPROVE Plugin
 	Plugin URI: http://kwipped.com
 	description:May be used by APPROVE clients to create the necessary link to connect into the Approve cart.
-	Version: 1.0
+	Version: 1.1
 	Author: Wellington Souza
 	Author URI: http://kwipped.com
 	License: GPL2
@@ -103,7 +103,7 @@ class Approve{
 		curl_close($ch);
 
 		$data = json_decode($result);
-		$teaser = "As low as $".number_format($data->lease_teaser[0]->monthly_rate,2);
+		$teaser = "Finance for $".number_format($data->lease_teaser[0]->monthly_rate,0)."/mo";
 		return $teaser;
 	}
 }
