@@ -35,6 +35,8 @@ function get_approve_information() {
 		//print_r($values); die();
 		$approve->add($values['data']->get_name(),get_post_meta($values['product_id'] , '_price', true),$values['quantity'],"new_product");
 	}
+	$shipping = $woocommerce->cart->get_shipping_total();
+	if(!empty($shipping)) $approve->add("Shipping",$shipping,1,"shipping");
 	//***************************
 	//* End of your code
 	//***************************
