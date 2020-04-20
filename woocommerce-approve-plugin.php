@@ -9,6 +9,14 @@
 	License: GPL2
 	*/
 
+	require 'plugin-update-checker-4.9/plugin-update-checker.php';
+	$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+		'https://github.com/user-name/KWIPPED/',
+		__FILE__,
+		'woocommerce-approve-plugin'
+	);
+
+
 add_action("wp_ajax_get_approve_information", 'get_approve_information' );
 add_action("wp_ajax_nopriv_get_approve_information", "get_approve_information");
 

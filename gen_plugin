@@ -1,1 +1,0 @@
-zip -r dist/woocommerce-approve-plugin.zip ../woocommerce-approve-plugin -x '*.git*' -x 'dist/*'
