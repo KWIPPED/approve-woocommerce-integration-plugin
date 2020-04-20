@@ -1,0 +1,4 @@
+cd ..
+zip -r woocommerce-approve-plugin.zip woocommerce-approve-plugin -x '*.git*' -x '*dist/*' -x '*gen_plugin' -x '*.DS_Store*'
+mv woocommerce-approve-plugin.zip woocommerce-approve-plugin/dist
+cd woocommerce-approve-plugin
