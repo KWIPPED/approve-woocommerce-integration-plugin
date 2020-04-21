@@ -3,7 +3,7 @@ Contributors: Wellington Souza
 Donate link: N/A
 Tags: approve, kwippped,woocommerce
 Requires at least: 4.6
-Tested up to: 4.6
+Tested up to: 5.4
 Stable tag: 1.3.6
 Requires PHP: 5.2.4
 License: GPLv2 or later
@@ -18,24 +18,20 @@ It add the needed AJAX capabilities to wordpress to get an instant finance rate 
 woocommerce cart. Rather than providing a finished front end button, it provides web designers with the ability
 to add finance rate information in any tag or place in any existing page.
 
-
 == Installation ==
 
-Download and install the plugin from the dist folder.
+Download the plugin from the dist folder at  https://github.com/KWIPPED/woocommerce-approve-plugin.
 
-1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Use the Settings->Plugin Name screen to configure the plugin
-1. (Make your instructions match the desired user flow for activating and installing your plugin. Include any steps that might be needed for explanatory purposes)
+1. Visit the Plugins page of your Wordpress instance and click on "Add New"
+1. Click on "Uoload Plugin" and point to the recently downloaded woocommerce-approve-plugin.php file
 
+More informatinon on how to integrate it into your Worpress site is available at https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Frequently Asked Questions ==
 
-
-== Screenshots ==
-
+Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
 
-= 1.2 =
+= 1.3.6 =
 * The first publically avaialble version.
