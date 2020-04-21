@@ -1,4 +1,4 @@
-#TL;DR#
+# TL;DR
 For experienced programmers.
 1. Retrieve your APPROVE id from KWIPPED
 2. Download the wordpress plugin from the dist folder
@@ -41,4 +41,4 @@ For experienced programmers.
 ```
 6. Done.
 
-#Detailed Installation Instructions#
+# Detailed Installation Instructions
