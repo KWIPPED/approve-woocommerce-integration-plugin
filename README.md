@@ -126,5 +126,5 @@ Here is the button code (as an example) in cotext withing the Woocommerce woocar
 					<?php do_action( 'woocommerce_cart_actions' ); ?>
 ```
 
-#Updates
+# Updates
 APPROVE Woocommerce plugin updates will be released periodically. You may update it by visiting the "Plugins" page in wordpress and following the provided instructions.
