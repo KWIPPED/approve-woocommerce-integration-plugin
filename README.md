@@ -1,3 +1,8 @@
+# Plugin Features
+	The APPROVE Woocommerce plugin provides a methodology for Wordpress developers to add the APPROVE lender network finance rates, lease cart, and lease application functionality into the Woocommerce cart. 
+	Each Woocommerce cart implementation is unique to each site, so instead of providing a single solution that may not work the way you desire, we addressed the crux of the problem, and created resources for Wordpress developers. Users of the APPROVE woocommerce plugin will be able to customize its look and location as needed by the site.
+	
+
 # TL;DR
 For experienced programmers.
 1. Retrieve your APPROVE id from KWIPPED
@@ -42,3 +47,6 @@ For experienced programmers.
 6. Done.
 
 # Detailed Installation Instructions
+
+## 1. Retrieve your APPROVE id from KWIPPED
+In order to use the APPROVE woocommerce plugin
