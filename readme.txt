@@ -4,7 +4,7 @@ Donate link: N/A
 Tags: approve, kwippped,woocommerce
 Requires at least: 4.6
 Tested up to: 5.4
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -33,5 +33,5 @@ Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
 
-= 1.3.6 =
+= 1.3.7 =
 * The first publically avaialble version.
