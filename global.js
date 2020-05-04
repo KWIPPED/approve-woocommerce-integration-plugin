@@ -1,10 +1,14 @@
 var approve = approve || {};
 approve.ajax_url = php_vars.ajax_url
 approve.mode = null;
+approve.cart_is_present = false;
 
 approve.update_approve_button = function(){
-	//Not cart
-	if(approve.mode!="cart"){
+
+	//****************************************
+	//* If there is a product on the screen.
+	//****************************************
+	if(approve.mode){
 		var info = this.get_woocart_information();
 		var data = {action: "get_approve_teaser",data:info};
 		jQuery.post(approve.ajax_url,data, function(response) {
@@ -26,8 +30,11 @@ approve.update_approve_button = function(){
 			});
 		});
 	}
-	//On cart
-	else{
+
+	//****************************************
+	//* If there is a cart on the screen.
+	//****************************************
+	if(approve.cart_is_present){
 		var data = {'action': 'get_approve_information'};
 		jQuery.post(approve.ajax_url,data, function(response) {
 			var url = response.url;
@@ -48,7 +55,6 @@ jQuery(document).ready(function(){
 	//**********************************************
 	if(jQuery('[approve-product-button-simple]').length>0) approve.mode="simple";
 	else if(jQuery('[approve-product-button-variable]').length>0) approve.mode="variable";
-	else approve.mode="cart";
 
 	if(approve.mode=="simple"){
 		approve.get_woocart_information = approve.get_woocart_information_simple;
@@ -56,11 +62,9 @@ jQuery(document).ready(function(){
 	else if(approve.mode=="variable"){
 		approve.get_woocart_information = approve.get_woocart_information_variable;
 	}
-	else{
-		//If we are running on the cart the information we need will completely from the ajax call.
-		approve.get_woocart_information=null;
-	}
 	//**********************************************
+
+	if(jQuery('[approve-cart-button]').length>0) approve.cart_is_present = true;
 
 	approve.update_approve_button();
 	//For product pages
