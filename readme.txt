@@ -32,6 +32,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+= 1.5.0 =
+* Created simple/variable product buttons. Also, changed strategy on inclusion of javascript.
+
 = 1.4.0 =
 * Stable release.
 

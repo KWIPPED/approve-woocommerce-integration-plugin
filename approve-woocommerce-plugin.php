@@ -3,7 +3,7 @@
 	Plugin Name: APPROVE Woocommerce Plugin
 	Plugin URI: http://kwipped.com
 	description:May be used by APPROVE clients to create the necessary link to connect into the Approve cart from a woocommerce cart.
-	Version: 1.4.0
+	Version: 1.5.0
 	Author: Wellington Souza
 	Author URI: http://kwipped.com
 	License: GPL2
@@ -18,6 +18,19 @@
 		__FILE__,
 		'approve-woocommerce-plugin'
 	);
+
+
+	//Include needed script and pass it some variables.
+	function load_approve_scripts() {
+		$data =[
+			"ajax_url" => admin_url("admin-ajax.php")
+		];
+		wp_enqueue_script('approve_global', plugin_dir_url(__FILE__) . 'global.js', array('jquery'));
+		wp_localize_script( 'approve_global', 'php_vars', $data );
+	}
+
+	//Get scripts loaded at the right time.
+	add_action( 'wp_enqueue_scripts', 'load_approve_scripts' );
 
 	//*****************************************************
 	//* Plugin settings : APPROVE Woocommerce Plugin (awcp)
@@ -56,10 +69,14 @@
 	//*****************************
 	//* Plugin settings END
 	//*****************************
-	
 
+	//Will retrieve woocart and return approve rates based on that
 	add_action("wp_ajax_get_approve_information", 'get_approve_information' );
 	add_action("wp_ajax_nopriv_get_approve_information", "get_approve_information");
+
+	//Will use information passed in data dn return approce rates base on that
+	add_action("wp_ajax_get_approve_teaser", 'get_approve_teaser' );
+	add_action("wp_ajax_nopriv_get_approve_teaser", "get_approve_teaser");
 
 	$mode = "live";
 	$landing_page_url= $mode=="test" ? "https://dev.kwipped.com/approve/finance" : "https://www.kwipped.com/approve/finance";
@@ -76,7 +93,8 @@
 		//* If you need information about the specific meaning of each of these fields please visit 
 		//* https://kwipped.com/someplacewhereinformationlives
 		//*****************************************************
-		$kwipped_approve_id=(get_option('awcp_options'))['approve_id'];
+		$kwipped_approve_id=get_option('awcp_options');
+		$kwipped_approve_id=$kwipped_approve_id['approve_id'];
 		
 		global $woocommerce;
 		$items = $woocommerce->cart->get_cart();
@@ -85,7 +103,7 @@
 			$approve->add($values['data']->get_name(),get_post_meta($values['product_id'] , '_price', true),$values['quantity'],"new_product");
 		}
 		$shipping = $woocommerce->cart->get_shipping_total();
-		if(!empty($shipping)) $approve->add("Shipping",$shipping,1,"shipping");
+		if(!empty($shipping) && $shipping>0) $approve->add("Shipping",$shipping,1,"shipping");
 		//***************************
 		//* End of your code
 		//***************************
@@ -94,6 +112,18 @@
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
 
+	function get_approve_teaser() {
+		$approve = new Approve();
+		$kwipped_approve_id=get_option('awcp_options');
+		$kwipped_approve_id=$kwipped_approve_id['approve_id'];
+		$approve->add($_POST['data']['model'],$_POST['data']['price'],1,"new_product");
+		//***************************
+		//* End of your code
+		//***************************
+
+		wp_send_json($approve->get_approve_information($kwipped_approve_id));
+		wp_die(); // this is required to terminate immediately and return a proper response
+	}
 
 	//****************************************************************************************
 	//* You should not modify the code below. It assures the correct format needed by Approve.
@@ -154,8 +184,15 @@
 			curl_close($ch);
 
 			$data = json_decode($result);
-			$teaser = "Finance for $".number_format($data->lease_teaser[0]->monthly_rate,0)."/mo";
+			if($data->lease_teaser[0]->monthly_rate> 1)
+				$teaser = "Finance for $".number_format($data->lease_teaser[0]->monthly_rate,0)."/mo";
+			else
+				$teaser = "Apply for Financing";
 			return $teaser;
 		}
+}
+//Dump to log.
+function dd2($item){
+	error_log(print_r($item,true));
 }
 ?>

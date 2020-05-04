@@ -8,43 +8,28 @@ Each Woocommerce cart implementation is unique to each site, so instead of provi
 # TL;DR
 For experienced programmers.
 1. Retrieve your APPROVE id from KWIPPED
-2. Download the wordpress plugin from the dist folder in GitHub
-3. Install the plugin into Wordpress
-4. Set your APPROVE id in the plugin settings
-3. The plugin provides an AJAX POST uri at admin_url('admin-ajax.php') with action get_approve_information
-4. Place the following javascript in the woocommerce cart and mini cart
-```
-<script>
-//***********************************
-//* Added by KWIPPED
-//***********************************
- 	if(!window.approve_custom_code_initialized){
-		window.approve_custom_code_initialized = true;
-		function update_approve_button(){
-			var data = {'action': 'get_approve_information'};
-			jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>' ,data, function(response) {
-				jQuery('[custom-approve-button]').each(function(){
-					jQuery(this).html(response.teaser);
-					jQuery(this).attr('href',response.url);
-				});
-			});
-	   }
-	   jQuery(document).ready(function() {
-		  update_approve_button();
-	   });
-	   jQuery(document.body).on( 'updated_cart_totals', function(){
-		   update_approve_button();
-	   });
-	}
-//******************************
-//* End of added by KWIPPED
-//*******************************
-</script>
-```
-5. Place a button in the woocommerce cart and mini cart.
 
+2. Download the wordpress plugin from the dist folder in GitHub
+
+3. Install the plugin into Wordpress
+
+4. Set your APPROVE id in the plugin settings. FYI: The plugin provides an AJAX POST uri at admin_url('admin-ajax.php') with action get_approve_information
+
+5. Place a button in the woocommerce product, cart and mini cart pages
+
+  
+
+Simple Product Button:
 ```
-<a href="https://www.kwipped.com/approve/finance?approveid=<?php echo (get_option('awcp_options'))['approve_id']; ?>" class="gem-button gem-button-size-medium gem-button-style-flat gem-button-text-weight-normal checkout-button button alt wc-forward" target="_blank" custom-approve-button >Apply for Financing</a>
+<button approve-product-button-simple>Apply for Financing</button>
+```
+Variable Product Button:
+```
+<button approve-product-button-simple>Apply for Financing</button>
+```
+Cart Button:
+```
+<button approve-cart-button>Apply for Financing</button>
 ```
 6. Done.
 
@@ -63,7 +48,7 @@ In order to use the APPROVE woocommerce plugin you will need a subscription to t
 In Wordpress navigate to the plugins page. Click on "Add New", then "Upload Plugin"
 1. Select the file you downloaded on Section #2
 2. The APPROVE Woocommerce plugin is now installed.
- 
+
 ## 4. Set your APPROVE id in the plugin settings
 1. In Wordpress, under "Settings" click on "APPROVE Woocommerce Plugin"
 2. Enter your Approve id retrieved in Section #1
@@ -73,44 +58,16 @@ Customization of the Woocommerce cart depends on the Wordpress and Woocommerce s
 
 Once the customization template is available, visit the Wordpress template editor. Point to the "Appearance menu" and select "Theme Editor". Select the theme you are currently using (e.g. TwentyTwenty) and navigate to the customizable Woocommerce cart page. This page will be located under woocommerce, cart in your theme, and it will be named cart.php.
 
-Now add the following code anywhere you may type HTML in your page. Please follow HTML standards when placing the code on this page.
-```
-<script>
-//***********************************
-//* Added by KWIPPED
-//***********************************
- 	if(!window.approve_custom_code_initialized){
-		window.approve_custom_code_initialized = true;
-		function update_approve_button(){
-			var data = {'action': 'get_approve_information'};
-			jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>' ,data, function(response) {
-				jQuery('[custom-approve-button]').each(function(){
-					jQuery(this).html(response.teaser);
-					jQuery(this).attr('href',response.url);
-				});
-			});
-	   }
-	   jQuery(document).ready(function() {
-		  update_approve_button();
-	   });
-	   jQuery(document.body).on( 'updated_cart_totals', function(){
-		   update_approve_button();
-	   });
-	}
-//******************************
-//* End of added by KWIPPED
-//*******************************
-</script>
-```
-The code above looks for APPROVE buttons in the Woocommerce cart and updates them with information such as monthly rate and APPROVE cart URL information.
-
 In the Woocommerce cart code, place the APPROVE button wherever it may be visible to your clients. In this example, I will place it next to the UPDATE CART button delivered in the standard woocart.
 Here is the button code...
+```html
+<button approve-cart-button>Apply for Financing</button>
 ```
-<a href="https://www.kwipped.com/approve/finance?approveid=<?php echo (get_option('awcp_options'))['approve_id']; ?>" class="gem-button gem-button-size-medium gem-button-style-flat gem-button-text-weight-normal checkout-button button alt wc-forward" target="_blank" custom-approve-button >Apply for Financing</a>
-```
-Here is the button code (as an example) in cotext withing the Woocommerce woocart...
-```
+Style the button as you wish.
+
+Here is the button code (as an example) in cotext withing the standard delivered Woocommerce woocart...
+
+```html
 <?php if ( wc_coupons_enabled() ) { ?>
 						<div class="coupon">
 							<label for="coupon_code"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" /> <button type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?></button>
@@ -120,11 +77,32 @@ Here is the button code (as an example) in cotext withing the Woocommerce woocar
 
 					<button type="submit" class="button" name="update_cart" value="<?php esc_attr_e( 'Update cart', 'woocommerce' ); ?>"><?php esc_html_e( 'Update cart', 'woocommerce' ); ?></button>
 					
-<a href="https://www.kwipped.com/approve/finance?approveid=<?php echo (get_option('awcp_options'))['approve_id']; ?>" class="gem-button gem-button-size-medium gem-button-style-flat gem-button-text-weight-normal checkout-button button alt wc-forward" target="_blank" custom-approve-button >Apply for Financing</a>
+					<button approve-cart-button>Apply for Financing</button>
 	
 	
 					<?php do_action( 'woocommerce_cart_actions' ); ?>
 ```
 
+## 5. Customize your Woocommerce Product Pages
+Woocommerce includes standard pages and steps for the creation of products. Use those steps and place out button wherever you may find best for your design. The followin example is one way to do it, but not the only way. 
+__Note:__ We provide two styles of buttons. One for a simple product and one for variable products. For more information on simple and variable products see Woocommerce documentation.
+
+In the Wordpress administration page click on __Producs__, then __Edit__ the product for which you would like a finance button. In the section named "__Product short description__" select __Text__ on the right side of the screen and paste the following code:
+
+For a simple product:
+
+```
+<button approve-product-button-simple>Apply for Financing</button>
+```
+
+For a variable product:
+
+```
+<button approve-product-button-simple>Apply for Financing</button>
+```
+
+
+
 # Updates
+
 APPROVE Woocommerce plugin updates will be released periodically. You may update it by visiting the "Plugins" page in wordpress and following the provided instructions.
