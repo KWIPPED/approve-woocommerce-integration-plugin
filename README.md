@@ -25,7 +25,7 @@ Simple Product Button:
 ```
 Variable Product Button:
 ```
-<button approve-product-button-simple>Apply for Financing</button>
+<button approve-product-button-variable>Apply for Financing</button>
 ```
 Cart Button:
 ```
@@ -98,7 +98,7 @@ For a simple product:
 For a variable product:
 
 ```
-<button approve-product-button-simple>Apply for Financing</button>
+<button approve-product-button-variable>Apply for Financing</button>
 ```
 
 
