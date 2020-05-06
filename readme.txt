@@ -32,6 +32,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+= 1.5.2 =
+* Hardened access to structured data to protect from other plugins on the page.
+
 = 1.5.1 =
 * Changed strategy on tracking cart and products on the page.
 

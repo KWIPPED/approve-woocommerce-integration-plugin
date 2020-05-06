@@ -97,8 +97,32 @@ approve.get_woocart_information_simple = function(){
 
 	//We will get the price from the structured data avaialble on the page. This was better then 
 	//trying to parse HTML to try and see if they had included a sale price, etc.
-	var jsonld = JSON.parse(document.querySelector('script[type="application/ld+json"]').innerText);
-	info.price = jsonld["@graph"][1].offers[0].price;
-	info.model = jsonld["@graph"][1].name;
+	//var jsonld = JSON.parse(document.querySelector('script[type="application/ld+json"]').innerText);
+	jQuery("[type='application/ld+json']").each(function(){
+		try{
+			var jsonld = JSON.parse(jQuery(this).html());
+			if(jsonld["@graph"][1] && jsonld["@graph"][1]['@type']=="Product"){
+				info.price = jsonld["@graph"][1].offers[0].price;
+				info.model = jsonld["@graph"][1].name;
+			}
+		}
+		catch(error){
+			console.error("The APPROVE plugin could not parse the page.");
+		}
+	});
 	return info;
 }
+
+
+
+jQuery("[type='application/ld+json']").each(function(){
+	try{
+		var jsonld = JSON.parse(jQuery(this).html());
+		if(jsonld["@graph"][1] && jsonld["@graph"][1]['@type']=="Product"){
+			console.log("FOUND!");
+		}
+	}
+	catch(error){
+		console.error("The APPROVE plugin could not parse the page.");
+	}
+});
