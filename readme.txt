@@ -32,6 +32,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+= 1.5.4 =
+* Code cleanup.
+
 = 1.5.3 =
 * Documentation update.
 

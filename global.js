@@ -112,17 +112,3 @@ approve.get_woocart_information_simple = function(){
 	});
 	return info;
 }
-
-
-
-jQuery("[type='application/ld+json']").each(function(){
-	try{
-		var jsonld = JSON.parse(jQuery(this).html());
-		if(jsonld["@graph"][1] && jsonld["@graph"][1]['@type']=="Product"){
-			console.log("FOUND!");
-		}
-	}
-	catch(error){
-		console.error("The APPROVE plugin could not parse the page.");
-	}
-});
