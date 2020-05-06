@@ -25,7 +25,7 @@
 		$data =[
 			"ajax_url" => admin_url("admin-ajax.php")
 		];
-		wp_enqueue_script('approve_global', plugin_dir_url(__FILE__) . 'global.js', array('jquery'));
+		wp_enqueue_script('approve_global', plugin_dir_url(__FILE__) . 'global.js', array('jquery'),'v1.5.4');
 		wp_localize_script( 'approve_global', 'php_vars', $data );
 	}
 
