@@ -100,10 +100,20 @@ approve.get_woocart_information_simple = function(){
 	//var jsonld = JSON.parse(document.querySelector('script[type="application/ld+json"]').innerText);
 	jQuery("[type='application/ld+json']").each(function(){
 		try{
+			// if(jsonld["@graph"][1] && jsonld["@graph"][1]['@type']=="Product"){
+			// 	info.price = jsonld["@graph"][1].offers[0].price;
+			// 	info.model = jsonld["@graph"][1].name;
+			// }
+
 			var jsonld = JSON.parse(jQuery(this).html());
-			if(jsonld["@graph"][1] && jsonld["@graph"][1]['@type']=="Product"){
-				info.price = jsonld["@graph"][1].offers[0].price;
-				info.model = jsonld["@graph"][1].name;
+			if(jsonld["@graph"].length){
+				for (var j=0; j<jsonld["@graph"].length; j++){
+					if(jsonld["@graph"][j]['@type']=="Product"){
+						info.price = jsonld["@graph"][j].offers[0].price;
+						info.model = jsonld["@graph"][j].name;
+						break;
+					}
+				}
 			}
 		}
 		catch(error){
