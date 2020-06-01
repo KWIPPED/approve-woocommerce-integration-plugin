@@ -81,7 +81,7 @@
 	$mode = "live";
 	$landing_page_url= $mode=="test" ? "https://dev.kwipped.com/approve/finance" : "https://www.kwipped.com/approve/finance";
 	$api_url= $mode=="test" ? "https://dev.kwipped.com/api/v2/approve-widget/finance-teasers/" : "https://www.kwipped.com/api/v2/approve-widget/finance-teasers/" ;
-	$cacert_file= $mode=="test" ? "/usr/local/etc/openssl/cert.pem" : null;
+	$cacert_file= $mode=="test" ? "/usr/local/etc/openssl/cert.pem" : __DIR__."/cacert.pem";
 
 	function get_approve_information() {
 		$approve = new Approve();
