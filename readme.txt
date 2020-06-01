@@ -32,6 +32,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+= 1.5.7 =
+* Included cacert file with distribution.
+
 = 1.5.6 =
 * Changed searach of product pricing in structured data on page.
 
