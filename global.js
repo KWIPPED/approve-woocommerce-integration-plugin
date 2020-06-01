@@ -3,8 +3,99 @@ approve.ajax_url = php_vars.ajax_url
 approve.mode = null;
 approve.cart_is_present = false;
 
-approve.update_approve_button = function(){
 
+//********************************************************************
+//* Woocommerce hide functino
+//********************************************************************
+approve.check_hide_tags = function(){
+	if(jQuery('approve-hide').length>0){
+		jQuery('[approve-container]').hide();
+	}
+}
+
+
+//********************************************************************
+//* Teaser tags in which the approve-total is set. 
+//* These values OVERRIDE other vlaues on the page.
+//********************************************************************
+approve.update_custom_teaser_tags = function(){
+	//Teaser rate tags with approve-total entries will be processed on the page no matter what. If they esxist and they have a value, then 
+	//we will use that value to get a teaser.
+	jQuery('[approve-function="teaser_rate"][approve-total]').each(function(){
+		var value = parseFloat(jQuery(this).attr('approve-total'));
+		if(isNaN(value)){
+			jQuery(this).html("ATTENTION! The approve total parameter must contain a number.");
+			return;
+		}
+		//If you are here we have a usable value;
+		var info = {value:value};
+		var data = {action: "get_approve_teaser_custom",data:info};
+		var ref = this;
+		jQuery.post(approve.ajax_url,data, function(response) {
+			jQuery(ref).html(response);
+		});
+	});
+}
+
+//********************************************************************
+//* Action tags in which the model,qty,price and type are set. 
+//* These values OVERRIDE other vlaues on the page.
+//********************************************************************
+approve.update_static_buttons = function(){
+	jQuery('[approve-function="hosted_app"][approve-action="add_to_app"]:not([approve-woocommerce-product]').each(function(){
+		var ref = jQuery(this);
+		var model = jQuery(this).attr('approve-model');
+		var item_type = jQuery(this).attr('approve-item-type');
+		var qty = jQuery(this).attr('approve-qty');
+		var price = parseFloat(jQuery(this).attr('approve-price'));
+		var errors = "";
+		var separator="";
+		if(!model){
+			errors = errors+separator+"The approve-model property is required.";
+			separator=" ";
+		}
+		if(!item_type){
+			errors = errors+separator+"The approve-item-type property is required.";
+			separator=" ";
+		}
+		if(!qty){
+			errors = errors+separator+"The approve-qty property is required.";
+			separator=" ";
+		}
+
+		if(isNaN(price)){
+			errors = errors+separator+"The approveprice property must be a number.";
+		}
+
+		if(errors){
+			errors = "Please address the following errors: "+errors;
+			jQuery(this).html(errors);
+			return;
+		}
+
+		var info = {
+			model:model,
+			item_type:item_type,
+			qty:qty,
+			price:price
+		};
+		var data = {action: "get_static_button_action",data:info};
+		jQuery.post(approve.ajax_url,data, function(response) {
+			//console.log(response);
+			var url = response.url;
+				ref.off('click');
+				ref.click(function(){
+					window.open(url);
+				})
+		});
+	});
+}
+
+//********************************************************************
+//* Dynamically retreieves WOOCOMMERCE information and updates
+//* pertinent tags on the screen. 
+//********************************************************************
+approve.update_approve_woocommerce_tags = function(){
 	//****************************************
 	//* If there is a product on the screen.
 	//****************************************
@@ -12,17 +103,38 @@ approve.update_approve_button = function(){
 		var info = this.get_woocart_information();
 		var data = {action: "get_approve_teaser",data:info};
 		jQuery.post(approve.ajax_url,data, function(response) {
-			jQuery('[approve-product-button-variable]').each(function(){
+			//************************************
+			// jQuery('[approve-product-button-variable]').each(function(){
+			// 	var url = response.url;
+			// 	jQuery(this).html(response.teaser);
+			// 	jQuery(this).off('click');
+			// 	jQuery(this).click(function(){
+			// 		window.open(url);
+			// 	})
+			// });
+			// jQuery('[approve-product-button-simple]').each(function(){
+			// 	var url = response.url;
+			// 	jQuery(this).html(response.teaser);
+			// 	jQuery(this).off('click');
+			// 	jQuery(this).click(function(){
+			// 		window.open(url);
+			// 	})
+			// });
+			//*************************************
+			//Ignore all teaser rate tags with approve total entries. They will be processed separately.
+			jQuery('[approve-function="teaser_rate"]:not([approve-total])').each(function(){
 				var url = response.url;
-				jQuery(this).html(response.teaser);
+				jQuery(this).html(response.teaser_raw);
+			});
+			jQuery('[approve-function="hosted_app"][approve-action="add_to_app"][approve-woocommerce-product="simple"]').each(function(){
+				var url = response.url;
 				jQuery(this).off('click');
 				jQuery(this).click(function(){
 					window.open(url);
 				})
 			});
-			jQuery('[approve-product-button-simple]').each(function(){
+			jQuery('[approve-function="hosted_app"][approve-action="add_to_app"][approve-woocommerce-product="variable"]').each(function(){
 				var url = response.url;
-				jQuery(this).html(response.teaser);
 				jQuery(this).off('click');
 				jQuery(this).click(function(){
 					window.open(url);
@@ -62,19 +174,24 @@ jQuery(document).ready(function(){
 	else if(approve.mode=="variable"){
 		approve.get_woocart_information = approve.get_woocart_information_variable;
 	}
+
 	//**********************************************
 
 	if(jQuery('[approve-cart-button]').length>0) approve.cart_is_present = true;
 
-	approve.update_approve_button();
+	approve.update_approve_woocommerce_tags();
 	//For product pages
 	jQuery('form.variations_form').on('woocommerce_variation_has_changed', function(){
-		approve.update_approve_button();
+		approve.update_approve_woocommerce_tags();
 	});
 	//For cart.
 	jQuery(document.body).on('updated_cart_totals', function(){
-		approve.update_approve_button();
+		approve.update_approve_woocommerce_tags();
 	});
+
+	approve.update_custom_teaser_tags();
+	approve.update_static_buttons();
+	approve.check_hide_tags();
 });
 
 /**
@@ -92,6 +209,7 @@ approve.get_woocart_information_variable = function(){
 	}
 	return info;
 }
+
 approve.get_woocart_information_simple = function(){
 	var info = {"model":null,"price":null};
 

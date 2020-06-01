@@ -74,14 +74,17 @@
 	add_action("wp_ajax_get_approve_information", 'get_approve_information' );
 	add_action("wp_ajax_nopriv_get_approve_information", "get_approve_information");
 
-	//Will use information passed in data dn return approce rates base on that
+	//Will use information passed in data dn return approve rates base on that
 	add_action("wp_ajax_get_approve_teaser", 'get_approve_teaser' );
 	add_action("wp_ajax_nopriv_get_approve_teaser", "get_approve_teaser");
 
-	$mode = "live";
-	$landing_page_url= $mode=="test" ? "https://dev.kwipped.com/approve/finance" : "https://www.kwipped.com/approve/finance";
-	$api_url= $mode=="test" ? "https://dev.kwipped.com/api/v2/approve-widget/finance-teasers/" : "https://www.kwipped.com/api/v2/approve-widget/finance-teasers/" ;
-	$cacert_file= $mode=="test" ? "/usr/local/etc/openssl/cert.pem" : null;
+	//Will use information passed in data to return a teaser.
+	add_action("wp_ajax_get_approve_teaser_custom", 'get_approve_teaser_custom' );
+	add_action("wp_ajax_nopriv_get_approve_teaser_custom", "get_approve_teaser_custom");
+
+	//Will use information passed in data to return a teaser.
+	add_action("wp_ajax_get_static_button_action", 'get_static_button_action' );
+	add_action("wp_ajax_nopriv_get_static_button_action", "get_static_button_action");
 
 	function get_approve_information() {
 		$approve = new Approve();
@@ -93,9 +96,6 @@
 		//* If you need information about the specific meaning of each of these fields please visit 
 		//* https://kwipped.com/someplacewhereinformationlives
 		//*****************************************************
-		$kwipped_approve_id=get_option('awcp_options');
-		$kwipped_approve_id=$kwipped_approve_id['approve_id'];
-		
 		global $woocommerce;
 		$items = $woocommerce->cart->get_cart();
 		foreach($items as $item => $values) { 
@@ -108,20 +108,35 @@
 		//* End of your code
 		//***************************
 
-		wp_send_json($approve->get_approve_information($kwipped_approve_id));
+		wp_send_json($approve->get_approve_information());
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
 
 	function get_approve_teaser() {
 		$approve = new Approve();
-		$kwipped_approve_id=get_option('awcp_options');
-		$kwipped_approve_id=$kwipped_approve_id['approve_id'];
 		$approve->add($_POST['data']['model'],$_POST['data']['price'],1,"new_product");
 		//***************************
 		//* End of your code
 		//***************************
 
-		wp_send_json($approve->get_approve_information($kwipped_approve_id));
+		wp_send_json($approve->get_approve_information());
+		wp_die(); // this is required to terminate immediately and return a proper response
+	}
+
+	/**
+	 * Returns a teaser rate for a specific value fed into this function.
+	 */
+	function get_approve_teaser_custom() {
+		$approve = new Approve();
+		$value = $_POST['data']['value'];
+		wp_send_json($approve->get_teaser($value));
+		wp_die(); // this is required to terminate immediately and return a proper response
+	}
+
+	function get_static_button_action() {
+		$approve = new Approve();
+		$approve->add($_POST['data']['model'],$_POST['data']['price'],$_POST['data']['qty'],$_POST['data']['item_type']);
+		wp_send_json($approve->get_approve_information());
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
 
@@ -131,6 +146,21 @@
 	class Approve{
 		private $items = [];
 		private $current_total=0;
+		private $wipped_approve_id = null;
+		private $mode = "live";
+		private $landing_page_url = null;
+		private $api_url = null;
+		private $cacert_file = null;
+	
+		function __construct() {
+			$kwipped_approve_id=get_option('awcp_options');
+			if(!empty($kwipped_approve_id) && isset($kwipped_approve_id['approve_id'])){
+				$this->kwipped_approve_id=$kwipped_approve_id['approve_id'];
+			}
+			$this->landing_page_url= $this->mode=="test" ? "https://dev.kwipped.com/approve/finance" : "https://www.kwipped.com/approve/finance";
+			$this->api_url= $this->mode=="test" ? "https://dev.kwipped.com/api/v2/approve-widget/finance-teasers/" : "https://www.kwipped.com/api/v2/approve-widget/finance-teasers/" ;
+			$this->cacert_file= $this->mode=="test" ? "/usr/local/etc/openssl/cert.pem" : __DIR__."/cacert.pem";
+	}
 
 		public function add($model,$price,$quantity,$type){
 			$tmp = [];
@@ -143,37 +173,41 @@
 			$this->items[]=(object)$tmp;
 		}
 
-		
-		public function get_approve_information($kwipped_approve_id){
-			global $landing_page_url;
+		public function get_approve_information(){
 			$teaser = "";
 			if(function_exists('curl_version')){
-				$teaser = $this->get_teaser($this->current_total,$kwipped_approve_id);
+				$teaser_raw = $this->get_teaser($this->current_total,$this->kwipped_approve_id);
+				if(!empty($teaser_raw)){
+					$teaser = "Finance for $".$teaser_raw."/mo";
+				}
+				else{
+					$teaser = null;
+				}
+				
 			}
 			else{
 				$teaser = "N/A Your server does not suppor CURL requests. Please ask your system administrator to enable it.";
 			}
 
 			return [
-				"url"=>$landing_page_url."?approveid=".$kwipped_approve_id.(sizeof($this->items)>0 ? "&items=".json_encode($this->items) : null),
-				"teaser"=>$teaser
+				"url"=>$this->landing_page_url."?approveid=".$this->kwipped_approve_id.(sizeof($this->items)>0 ? "&items=".json_encode($this->items) : null),
+				"teaser"=>$teaser,
+				"teaser_raw"=>$teaser_raw
 			];
 		}
 
 		//**********************************
 		//* Retreieves teasers from KWIPPED.
 		//**********************************
-		private function get_teaser($amount,$kwipped_approve_id){
-			global $api_url, $cacert_file;
+		public function get_teaser($amount){
 			$ch = curl_init();
-
-			curl_setopt($ch, CURLOPT_URL, $api_url.$amount);
+			curl_setopt($ch, CURLOPT_URL, $this->api_url.$amount);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-			if(!empty($cacert_file)) curl_setopt ($ch, CURLOPT_CAINFO, $cacert_file);
+			if(!empty($this->cacert_file)) curl_setopt ($ch, CURLOPT_CAINFO, $this->cacert_file);
 			//var_dump(openssl_get_cert_locations());
 			$headers = array();
-			$headers[] = 'Authorization: Basic '.$kwipped_approve_id;
+			$headers[] = 'Authorization: Basic '.$this->kwipped_approve_id;
 			$headers[] = 'Content-Type: application/json';
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -185,9 +219,9 @@
 
 			$data = json_decode($result);
 			if($data->lease_teaser[0]->monthly_rate> 1)
-				$teaser = "Finance for $".number_format($data->lease_teaser[0]->monthly_rate,0)."/mo";
+				$teaser = number_format($data->lease_teaser[0]->monthly_rate,0);
 			else
-				$teaser = "Apply for Financing";
+				$teaser = null;
 			return $teaser;
 		}
 }
