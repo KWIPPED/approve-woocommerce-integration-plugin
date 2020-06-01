@@ -32,6 +32,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+= 1.5.8 =
+* Changed strategy on retrieving data for simple product.
+
 = 1.5.7 =
 * Included cacert file with distribution.
 

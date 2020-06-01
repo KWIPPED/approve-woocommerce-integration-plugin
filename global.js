@@ -106,7 +106,12 @@ approve.get_woocart_information_simple = function(){
 			// }
 
 			var jsonld = JSON.parse(jQuery(this).html());
-			if(jsonld["@graph"].length){
+			//Information could be in level 0 or in a graph.
+			if(jsonld["@type"] && jsonld["@type"]=="Product"){
+				info.price = jsonld.offers[0].price;
+				info.model = jsonld.name;
+			}
+			else if(jsonld["@graph"] && jsonld["@graph"].length){
 				for (var j=0; j<jsonld["@graph"].length; j++){
 					if(jsonld["@graph"][j]['@type']=="Product"){
 						info.price = jsonld["@graph"][j].offers[0].price;
@@ -114,6 +119,9 @@ approve.get_woocart_information_simple = function(){
 						break;
 					}
 				}
+			}
+			else{
+				console.error("The APPROVE plugin could not find the woocommerce structured data on the page.");
 			}
 		}
 		catch(error){
