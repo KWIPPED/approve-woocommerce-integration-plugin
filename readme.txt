@@ -1,10 +1,10 @@
-=== Woocommerce Approve Plugin ===
+=== Woocommerce Integration Plugin ===
 Contributors: Wellington Souza
 Donate link: N/A
 Tags: approve, kwippped,woocommerce
 Requires at least: 4.6
 Tested up to: 5.4
-Stable tag: 1.5.6
+Stable tag: 2.0.0
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,54 +13,26 @@ Provides the necessary structure to retrieve and use KWIPPED APPROVE lender netw
 
 == Description ==
 
-APPROVE by KWIPPED provides businesses with a network of finance lenders specialized in b2b transactions.
-It add the needed AJAX capabilities to wordpress to get an instant finance rate for the total in the current
-woocommerce cart. Rather than providing a finished front end button, it provides web designers with the ability
-to add finance rate information in any tag or place in any existing page.
+The APPROVE Woocommerce integration plugin provides a methodology for Wordpress developers to add the APPROVE 
+lender network finance rates, lease cart, and lease application functionality into Woocommerce product pages and cart. 
+
+Each Woocommerce cart implementation is unique to each site, so instead of providing a single solution that may not work for 
+your site, we addressed the crux of the problem and created resources for Wordpress developers. Users of the APPROVE Woocommerce 
+integration plugin will be able to customize its look and location as needed by the site.
 
 == Installation ==
 
-Download the plugin from the dist folder at  https://github.com/KWIPPED/woocommerce-approve-plugin.
+Download the plugin from the dist folder at  https://github.com/KWIPPED/approve-woocommerce-integration-plugin.
 
 1. Visit the Plugins page of your Wordpress instance and click on "Add New"
-1. Click on "Uoload Plugin" and point to the recently downloaded woocommerce-approve-plugin.php file
+1. Click on "Uoload Plugin" and point to the recently downloaded approve-woocommerce-integration-plugin.php file
 
-More informatinon on how to integrate it into your Worpress site is available at https://github.com/KWIPPED/woocommerce-approve-plugin.
+More informatinon on how to integrate it into your Worpress site is available at https://github.com/KWIPPED/approve-woocommerce-integration-plugin.
 
 == Frequently Asked Questions ==
 
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
-= 1.5.6 =
-* Changed searach of product pricing in structured data on page.
-
-= 1.5.5 =
-* Added version to Javascript.
-
-= 1.5.4 =
-* Code cleanup.
-
-= 1.5.3 =
-* Documentation update.
-
-= 1.5.2 =
-* Hardened access to structured data to protect from other plugins on the page.
-
-= 1.5.1 =
-* Changed strategy on tracking cart and products on the page.
-
-= 1.5.0 =
-* Created simple/variable product buttons. Also, changed strategy on inclusion of javascript.
-
-= 1.4.0 =
-* Stable release.
-
-= 1.3.9 =
-* Updated plugin for naming consistency.
-
-= 1.3.8 =
-* Added settings page.
-
-= 1.3.7 =
+= 2.0.0 =
 * The first publically avaialble version.

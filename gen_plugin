@@ -1,4 +1,4 @@
 cd ..
-zip -r approve-woocommerce-plugin.zip approve-woocommerce-plugin -x '*.git*' -x '*dist/*' -x '*gen_plugin' -x '*.DS_Store*'
-mv approve-woocommerce-plugin.zip approve-woocommerce-plugin/dist
-cd approve-woocommerce-plugin
+zip -r approve-woocommerce-integration-plugin.zip approve-woocommerce-integration-plugin -x '*.git*' -x '*dist/*' -x '*gen_plugin' -x '*.DS_Store*'
+mv approve-woocommerce-integration-plugin.zip approve-woocommerce-integration-plugin/dist
+cd approve-woocommerce-integration-plugin
