@@ -1,6 +1,7 @@
 # Version
 Current version 2.
-[Legacy Version 1 documentation.](https://github.com/KWIPPED/approve-woocommerce-integration-plugin/tree/4bb4d9353e3762c79cb37187bafeef3849ce2a09)
+
+[For legacy Version 1 documentation follow this link.](https://github.com/KWIPPED/approve-woocommerce-integration-plugin/tree/4bb4d9353e3762c79cb37187bafeef3849ce2a09)
 # Plugin Features
 
 The APPROVE Woocommerce integration plugin provides a methodology for Wordpress developers to add the APPROVE lender network finance rates, lease cart, and lease application functionality into Woocommerce product pages and cart. 

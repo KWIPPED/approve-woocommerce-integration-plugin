@@ -14,7 +14,7 @@
 	
 	class ApproveWoocommerceIntegrationPlugin{
 
-		private $version = "2.0.0";
+		private $version = "2.0.2";
 		private $test = true;
 
 		function __construct(){
