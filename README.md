@@ -54,7 +54,7 @@ Teaser Rate Tag  Example:
 
 ```html
 <span
-  approve-function=”teaser_rate”
+  approve-function="teaser_rate"
   ></span>/mo Apply For Financing
 ```
 6. Done.
