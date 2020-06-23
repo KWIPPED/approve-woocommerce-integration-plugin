@@ -81,7 +81,7 @@ Here is the button code...
 ```html
 <button type="button" approve-woocommerce-cart approve-function="hosted_app">
 	Apply for Financing<BR>
-	<span approve-function="teaser_rate" approve-woocommerce-cart></span>/mo Apply For Financing
+	As low as <span approve-function="teaser_rate" approve-woocommerce-cart></span>/mo
 </button>
 ```
 Style the button as you wish.
@@ -100,7 +100,7 @@ Here is the button code (as an example) in cotext withing the standard delivered
 
 <button type="button" approve-woocommerce-cart approve-function="hosted_app">
 	Apply for Financing<BR>
-	<span approve-function="teaser_rate" approve-woocommerce-cart></span>/mo Apply For Financing
+	As low as <span approve-function="teaser_rate" approve-woocommerce-cart></span>/mo
 </button>
 
 <?php do_action( 'woocommerce_cart_actions' ); ?>
