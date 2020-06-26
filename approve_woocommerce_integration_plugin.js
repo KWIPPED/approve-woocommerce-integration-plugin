@@ -40,7 +40,6 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 			});
 
 			jQuery('[approve-function="hosted_app"][approve-action="add_to_app"][approve-woocommerce-product="variable"]').each(function(){
-				console.log(response);
 				var url = response.url;
 				jQuery(this).off('click');
 				jQuery(this).click(function(){
@@ -49,6 +48,7 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 			});
 			jQuery('[approve-function="embedded_app"][approve-action="add_to_app"][approve-woocommerce-product="variable"]').each(function(){
 				//The app reference is placed on the page by the APPROVE plugin, which is a pre-requirement.
+				jQuery(this).off('click');
 				jQuery(this).click(function(){
 					window.kwipped_approve.embedded_app.app_reference.add_equipment(response.items)
 				});

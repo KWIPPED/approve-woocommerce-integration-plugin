@@ -34,6 +34,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+ 2.0.4 =
+* Variable product was adding items to cart multiple times.
+
  2.0.3 =
 * Minor bugs.
 
