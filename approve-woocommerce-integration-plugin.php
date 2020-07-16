@@ -3,7 +3,7 @@
 	Plugin Name: APPROVE Woocommerce Integration Plugin
 	Plugin URI: http://kwipped.com
 	description:May be used by APPROVE clients to create the necessary link to connect into the Approve cart from wordpress.
-	Version: 2.0.4
+	Version: 2.0.5
 	Author: Wellington Souza
 	Author URI: http://kwipped.com
 	License: GPL2
@@ -14,7 +14,7 @@
 	
 	class ApproveWoocommerceIntegrationPlugin{
 
-		private $version = "2.0.4";
+		private $version = "2.0.5";
 		private $test = false;
 
 		function __construct(){
@@ -32,9 +32,10 @@
 			//is available. If not, we will throw an error, which will stop the activation and display the throw message
 			//to the user.
 			register_activation_hook(__FILE__, function(){
-				if(!is_plugin_active( 'approve-wordpress-plugin/approve-wordpress-plugin.php' )){
-					die("The APPROVE WordPress Plugin is required. Please install and activate that plugin first.");
-				}
+				// This was not working, so I temporarily disabled it. WOD 7.20.
+				// if(!is_plugin_active( 'approve-wordpress-plugin/approve-wordpress-plugin.php' )){
+				// 	die("The APPROVE WordPress Plugin is required. Please install and activate that plugin first.");
+				// }
 			});
 
 			 add_action('wp_enqueue_scripts',array($this,'load_scripts'));
