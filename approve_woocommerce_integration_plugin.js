@@ -31,12 +31,16 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 				jQuery(this).click(function(){
 					window.open(url);
 				})
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
 			});
 			jQuery('[approve-function="embedded_app"][approve-action="add_to_app"][approve-woocommerce-product="simple"]').each(function(){
 				//The app reference is placed on the page by the APPROVE plugin, which is a pre-requirement.
 				jQuery(this).click(function(){
 					window.kwipped_approve.embedded_app.app_reference.add_equipment(response.items)
 				});
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
 			});
 
 			jQuery('[approve-function="hosted_app"][approve-action="add_to_app"][approve-woocommerce-product="variable"]').each(function(){
@@ -45,6 +49,8 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 				jQuery(this).click(function(){
 					window.open(url);
 				})
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
 			});
 			jQuery('[approve-function="embedded_app"][approve-action="add_to_app"][approve-woocommerce-product="variable"]').each(function(){
 				//The app reference is placed on the page by the APPROVE plugin, which is a pre-requirement.
@@ -52,6 +58,8 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 				jQuery(this).click(function(){
 					window.kwipped_approve.embedded_app.app_reference.add_equipment(response.items)
 				});
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
 			});
 
 		});
@@ -64,18 +72,34 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 		var data = {'action': 'get_woocart_approve_information'};
 		jQuery.post(window.kwipped_approve.ajax_url,data, function(response) {
 			var url = response.url;
-			console.log(response);
 			jQuery('[approve-woocommerce-cart][approve-function="hosted_app"]').each(function(){
 				//jQuery(this).html(response.teaser);
 				jQuery(this).off('click');
 				jQuery(this).click(function(){
 					window.open(url);
 				})
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
+				//IMPORTANT - The cart will be refreshed on the screen when the totals update. The standard mutation observer
+				//for the show/hide function gets wiped out when that happens. For this reason, the core code ignores the cart,
+				//which calls the show_hide function directly every time there is an update.
+				if(window.kwipped_approve && window.kwipped_approve.core){
+					window.kwipped_approve.core.show_hide(this);
+				}
 			});
 			jQuery('[approve-woocommerce-cart][approve-function="embedded_app"]').each(function(){
+				jQuery(this).off('click');
 				jQuery(this).click(function(){
 					window.kwipped_approve.embedded_app.app_reference.add_equipment(response.items)
 				});
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
+				//IMPORTANT - The cart will be refreshed on the screen when the totals update. The standard mutation observer
+				//for the show/hide function gets wiped out when that happens. For this reason, the core code ignores the cart,
+				//which calls the show_hide function directly every time there is an update.
+				if(window.kwipped_approve && window.kwipped_approve.core){
+					window.kwipped_approve.core.show_hide(this);
+				}
 			});
 			jQuery('[approve-woocommerce-cart][approve-function="teaser_rate"]').each(function(){
 				jQuery(this).html(response.teaser_raw);

@@ -3,7 +3,7 @@
 	Plugin Name: APPROVE Woocommerce Integration Plugin
 	Plugin URI: http://kwipped.com
 	description:May be used by APPROVE clients to create the necessary link to connect into the Approve cart from wordpress.
-	Version: 2.0.5
+	Version: 2.0.6
 	Author: Wellington Souza
 	Author URI: http://kwipped.com
 	License: GPL2
@@ -14,7 +14,7 @@
 	
 	class ApproveWoocommerceIntegrationPlugin{
 
-		private $version = "2.0.5";
+		private $version = "2.0.6";
 		private $test = false;
 
 		function __construct(){
@@ -95,7 +95,7 @@
 			$items = $woocommerce->cart->get_cart();
 			foreach($items as $item => $values) { 
 				//print_r($values); die();
-				$approve->add($values['data']->get_name(),get_post_meta($values['product_id'] , '_price', true),$values['quantity'],"new_product");
+				$approve->add($values['data']->get_name(),$values['data']->get_price(),$values['quantity'],"new_product");
 			}
 			$shipping = $woocommerce->cart->get_shipping_total();
 			if(!empty($shipping) && $shipping>0) $approve->add("Shipping",$shipping,1,"shipping");
