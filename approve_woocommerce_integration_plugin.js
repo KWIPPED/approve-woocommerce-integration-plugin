@@ -159,34 +159,46 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 	//We will get the price from the structured data avaialble on the page. This was better then 
 	//trying to parse HTML to try and see if they had included a sale price, etc.
 	//var jsonld = JSON.parse(document.querySelector('script[type="application/ld+json"]').innerText);
+	var found_data = false;
 	jQuery("[type='application/ld+json']").each(function(){
 		try{
-			// if(jsonld["@graph"][1] && jsonld["@graph"][1]['@type']=="Product"){
-			// 	info.price = jsonld["@graph"][1].offers[0].price;
-			// 	info.model = jsonld["@graph"][1].name;
-			// }
 			var jsonld = JSON.parse(jQuery(this).html());
 			//Information could be in level 0 or in a graph.
 			if(jsonld["@type"] && jsonld["@type"]=="Product"){
 				info.price = jsonld.offers[0].price;
 				info.model = jsonld.name;
+				found_data = true;
 			}
 			else if(jsonld["@graph"] && jsonld["@graph"].length){
 				for (var j=0; j<jsonld["@graph"].length; j++){
 					if(jsonld["@graph"][j]['@type']=="Product"){
 						info.price = jsonld["@graph"][j].offers[0].price;
 						info.model = jsonld["@graph"][j].name;
+						found_data = true;
 						break;
 					}
 				}
-			}
-			else{
-				console.error("The APPROVE plugin could not find the woocommerce structured data on the page.");
 			}
 		}
 		catch(error){
 			console.error("The APPROVE plugin could not parse the page.");
 		}
 	});
+	//If the data was not found in structured data, we will try metadata on the page.
+	if(!found_data){
+		var metadata_model = jQuery("[property='og:title'").attr('content');
+		var metadata_price = jQuery("[property='product:price:amount'").attr('content');
+		if(metadata_model && metadata_price){
+			info.price = metadata_price.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+			info.model = metadata_model;
+			found_data = true;
+		}
+	}
+
+	//If all else failed, we will alert ourselves.
+	if(!found_data){
+		console.error("The APPROVE plugin could not find the woocommerce structured data on the page.");
+	}
+
 	return info;
 }
