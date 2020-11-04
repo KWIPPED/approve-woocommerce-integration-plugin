@@ -114,12 +114,16 @@ jQuery(document).ready(function(){
 	//**********************************************
 	if(jQuery('[approve-woocommerce-product="simple"]').length>0) window.kwipped_approve.mode="simple";
 	else if(jQuery('[approve-woocommerce-product="variable"]').length>0) window.kwipped_approve.mode="variable";
+	else if(jQuery('[approve-woocommerce-product="composite"]').length>0) window.kwipped_approve.mode="composite";
 
 	if(window.kwipped_approve.mode=="simple"){
 		window.kwipped_approve.get_woocart_information = window.kwipped_approve.get_woocart_information_simple;
 	}
 	else if(window.kwipped_approve.mode=="variable"){
 		window.kwipped_approve.get_woocart_information = window.kwipped_approve.get_woocart_information_variable;
+	}
+	else if(window.kwipped_approve.mode=="composite"){
+		window.kwipped_approve.get_woocart_information = window.kwipped_approve.get_woocart_information_composite;
 	}
 
 	//**********************************************
@@ -149,6 +153,28 @@ window.kwipped_approve.get_woocart_information_variable = function(){
 	totalPrice  = parsePrice.toFixed(2);
 	if(!(totalPrice=="NaN")){
 		info.price = totalPrice;
+	}
+	//******************************************************************************************
+	// If a custom search is provided
+	// If we have not found a model in the regular place we will let the user give us a selector.
+	//******************************************************************************************
+	if(!info.model){
+		if(window.kwipped_approve.variable_product_alternate_model_search && window.kwipped_approve.variable_product_alternate_model_search.length){
+			var el=jQuery(window.kwipped_approve.variable_product_alternate_model_search[0]);
+			for(i=1;i<window.kwipped_approve.variable_product_alternate_model_search.length;i++){
+				el=el.find(window.kwipped_approve.variable_product_alternate_model_search[i]);
+			}
+			info.model = el.text();
+		}
+	}
+	if(!info.price){
+		if(window.kwipped_approve.variable_product_alternate_price_search && window.kwipped_approve.variable_product_alternate_price_search.length){
+			var el=jQuery(window.kwipped_approve.variable_product_alternate_price_search[0]);
+			for(i=1;i<window.kwipped_approve.variable_product_alternate_price_search.length;i++){
+				el=el.find(window.kwipped_approve.variable_product_alternate_price_search[i]);
+			}
+			info.price = el.text().replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+		}
 	}
 	return info;
 }
@@ -193,6 +219,63 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 			info.model = metadata_model;
 			found_data = true;
 		}
+	}
+	//If the data was not found we will try a custom search.
+	if(!found_data){
+		var model = null;
+		var price = null;
+		if(window.kwipped_approve.simple_product_alternate_model_search && window.kwipped_approve.simple_product_alternate_model_search.length){
+			var el=jQuery(window.kwipped_approve.simple_product_alternate_model_search[0]);
+			for(i=1;i<window.kwipped_approve.simple_product_alternate_model_search.length;i++){
+				el=el.find(window.kwipped_approve.simple_product_alternate_model_search[i]);
+			}
+			model = el.text();
+		}
+		if(window.kwipped_approve.simple_product_alternate_price_search && window.kwipped_approve.simple_product_alternate_price_search.length){
+			var el=jQuery(window.kwipped_approve.simple_product_alternate_price_search[0]);
+			for(i=1;i<window.kwipped_approve.simple_product_alternate_price_search.length;i++){
+				el=el.find(window.kwipped_approve.simple_product_alternate_price_search[i]);
+			}
+			price = el.text().replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+		}
+		if(model && price){
+			info.price = price.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+			info.model = model;
+			found_data = true;
+		}
+	}
+
+	//If all else failed, we will alert ourselves.
+	if(!found_data){
+		console.error("The APPROVE plugin could not find the woocommerce structured data on the page.");
+	}
+
+	return info;
+}
+
+window.kwipped_approve.get_woocart_information_composite = function(){
+	var info = {"model":null,"price":null};
+
+	var model = null;
+	var price = null;
+	if(window.kwipped_approve.composite_product_alternate_model_search && window.kwipped_approve.composite_product_alternate_model_search.length){
+		var el=jQuery(window.kwipped_approve.composite_product_alternate_model_search[0]);
+		for(i=1;i<window.kwipped_approve.composite_product_alternate_model_search.length;i++){
+			el=el.find(window.kwipped_approve.composite_product_alternate_model_search[i]);
+		}
+		model = el.text();
+	}
+	if(window.kwipped_approve.composite_product_alternate_price_search && window.kwipped_approve.composite_product_alternate_price_search.length){
+		var el=jQuery(window.kwipped_approve.composite_product_alternate_price_search[0]);
+		for(i=1;i<window.kwipped_approve.composite_product_alternate_price_search.length;i++){
+			el=el.find(window.kwipped_approve.composite_product_alternate_price_search[i]);
+		}
+		price = el.text().replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+	}
+	if(model && price){
+		info.price = price.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+		info.model = model;
+		found_data = true;
 	}
 
 	//If all else failed, we will alert ourselves.
