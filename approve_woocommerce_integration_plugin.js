@@ -203,7 +203,6 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 
 	//We will get the price from the structured data avaialble on the page. This was better then 
 	//trying to parse HTML to try and see if they had included a sale price, etc.
-	//var jsonld = JSON.parse(document.querySelector('script[type="application/ld+json"]').innerText);
 	var found_data = false;
 	jQuery("[type='application/ld+json']").each(function(){
 		try{

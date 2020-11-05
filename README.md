@@ -39,6 +39,14 @@ Variable Product Button  Example:
   approve-woocommerce-product="variable"
 >
 ```
+Composite Product Button  Example:
+```html
+<button 
+  approve-function="embedded_app"
+  approve-action="add_to_app"
+  approve-woocommerce-product="composite"
+>
+```
 Cart Button  Example:
 ```html
 <button
@@ -136,6 +144,94 @@ Apply For Financing</button>
 
 
 ```
+
+## Technical Reference
+The Woocommerce buttons will for information in standard places on the page. It was designed with the standard Woocommerce templating in place, and it will 
+not work well if the template has been highly customized. The following are the standard places the APPROVE Woocommerce integration tag will look for 
+information. 
+
+###Simple Product:
+
+1. It will look for product and pricing information inside of the standard structured data dumped in the page by Woocommerce. ( tag property type='application/ld+json'). It looks for a key of **@Type** with a value od **"Product"** to retreive price and product name. If that is not found it will look for a key of **@graph**, which is an array, it will iterate through it, and look for a key of **@type** and the value of **"Product"**. If it finds it, it will retreieve the product name and price from there. 
+2. If no data if found on step 1, then it will look for the tags with following properties on the page, which are also placed on the page automatically by Woocommerce. and retreive the price and product names from it.
+```
+property='og:title'"
+property='product:price:amount'
+```
+
+Example:
+
+```html
+<meta property="og:title" content="Product 1" />
+<meta property="product:price:amount" content="6375"/>
+```
+
+
+3. If no data is found on steps 1 and 2, it will try to search for the content of the alternate tags provided programatically by you. The names of the variables needed are the following:
+```javascript
+window.kwipped_approve.simple_product_alternate_model_search
+window.kwipped_approve.simple_product_alternate_price_search
+```
+
+Example:
+
+```javascript
+window.kwipped_approve.simple_product_alternate_model_search = ['.heading-text','h1'];
+window.kwipped_approve.simple_product_alternate_price_search = ['.entry-summary','.price'];
+```
+
+The plugin will look for each of the items provided in the array, in order, and take the content of the found object.
+
+### Variable Product
+
+1. It will look for product name inside of a tag containing the class **.product_title**. It will look for pricing information in the following tag hierarchy: **.woocommerce-variation-price**, then **.amount**.
+2. If the product name or price were not found, it will look for the missing information (only the missing information) in the the alternate tags provided programatically by you. The names of the variables needed are the following:
+
+```javascript
+window.kwipped_approve.variable_product_alternate_model_search
+window.kwipped_approve.variable_product_alternate_price_search
+```
+
+Example:
+
+```javascript
+window.kwipped_approve.variable_product_alternate_model_search = ['.heading-text','h1'];
+window.kwipped_approve.variable_product_alternate_price_search = ['.example','.price'];
+```
+
+
+
+### Composite Product
+
+The integration plugin has no default methodology to find composite product infomrmation. You must utilize the alternate tags provided programatically by you. The names of the variables needed are the following:
+
+```javascript
+window.kwipped_approve.variable_product_alternate_model_search
+window.kwipped_approve.variable_product_alternate_price_search
+```
+
+Example:
+
+```
+window.kwipped_approve.composite_product_alternate_model_search = ['.heading-text','h1'];
+window.kwipped_approve.composite_product_alternate_price_search = ['.example','.price'];
+```
+
+#### IMPORTANT NOTE ON COMPOSITE PRODUCTS:
+
+Our code needs to know that the composite product was updated when the user makes choices. The following code should be dropped in the composite product page, and it will alert our plugin that something has changed when the user interacts with the page.
+
+```javascript
+$( '.composite_data' ).on( 'wc-composite-initializing', function( event, composite ) {
+	composite.actions.add_action('active_step_changed',function(){
+		window.kwipped_approve.update_approve_woocommerce_tags();
+		});
+});
+```
+
+Documentation for Woocommerce composite product API is available at [Woocommerce](https://docs.woocommerce.com/document/composite-products/composite-products-js-api-reference/) site.
+
+
 
 # Updates
 

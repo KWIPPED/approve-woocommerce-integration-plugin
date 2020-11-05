@@ -34,6 +34,12 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+2.0.11 =
+* Completed ability to utilize composite products.
+
+2.0.10 =
+* Transitional version. No fixes.
+
 2.0.9 =
 * Small bug fixes.
 
