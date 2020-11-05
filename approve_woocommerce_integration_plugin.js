@@ -275,13 +275,6 @@ window.kwipped_approve.get_woocart_information_composite = function(){
 	if(model && price){
 		info.price = price.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
 		info.model = model;
-		found_data = true;
 	}
-
-	//If all else failed, we will alert ourselves.
-	if(!found_data){
-		console.error("The APPROVE plugin could not find the woocommerce structured data on the page.");
-	}
-
 	return info;
 }
