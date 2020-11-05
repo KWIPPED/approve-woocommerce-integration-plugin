@@ -62,6 +62,25 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 				jQuery(this).attr('approve-items',JSON.stringify(response.items));
 			});
 
+			jQuery('[approve-function="hosted_app"][approve-action="add_to_app"][approve-woocommerce-product="composite"]').each(function(){
+				var url = response.url;
+				jQuery(this).off('click');
+				jQuery(this).click(function(){
+					window.open(url);
+				})
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
+			});
+			jQuery('[approve-function="embedded_app"][approve-action="add_to_app"][approve-woocommerce-product="composite"]').each(function(){
+				//The app reference is placed on the page by the APPROVE plugin, which is a pre-requirement.
+				jQuery(this).off('click');
+				jQuery(this).click(function(){
+					window.kwipped_approve.embedded_app.app_reference.add_equipment(response.items)
+				});
+				//The following is placed on the button so the show/hide based on minimum values will work.
+				jQuery(this).attr('approve-items',JSON.stringify(response.items));
+			});
+
 		});
 	}
 
@@ -273,7 +292,7 @@ window.kwipped_approve.get_woocart_information_composite = function(){
 		price = el.text().replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
 	}
 	if(model && price){
-		info.price = price.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+		info.price = price;
 		info.model = model;
 	}
 	return info;
