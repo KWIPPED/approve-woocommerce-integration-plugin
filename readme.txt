@@ -35,7 +35,7 @@ Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
 2.0.11 =
-* Completed ability to utilize composite products.
+* Completed ability to utilize composite products. Added technical
 
 2.0.10 =
 * Transitional version. No fixes.
