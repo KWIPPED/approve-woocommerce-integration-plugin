@@ -35,7 +35,8 @@ window.kwipped_approve.update_approve_woocommerce_tags = function(){
 				jQuery(this).attr('approve-items',JSON.stringify(response.items));
 			});
 			jQuery('[approve-function="embedded_app"][approve-action="add_to_app"][approve-woocommerce-product="simple"]').each(function(){
-				//The app reference is placed on the page by the APPROVE plugin, which is a pre-requirement.
+				//The app reference is placed on the page by the APPROVE plugin, which is a pre-requirement.'
+				jQuery(this).off('click');
 				jQuery(this).click(function(){
 					window.kwipped_approve.embedded_app.app_reference.add_equipment(response.items)
 				});
@@ -158,6 +159,13 @@ jQuery(document).ready(function(){
 	jQuery(document.body).on('updated_cart_totals', function(){
 		window.kwipped_approve.update_approve_woocommerce_tags();
 	});
+
+	//Quantity in simple product pages.
+	if(window.kwipped_approve.mode==="simple"){
+		jQuery('[name="quantity"]').change(function(){
+			window.kwipped_approve.update_approve_woocommerce_tags();
+		});
+	}
 });
 
 /**
@@ -195,6 +203,9 @@ window.kwipped_approve.get_woocart_information_variable = function(){
 			info.price = el.text().replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
 		}
 	}
+
+	info.qty = 1;
+
 	return info;
 }
 
@@ -268,6 +279,16 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 		console.error("The APPROVE plugin could not find the woocommerce structured data on the page.");
 	}
 
+	//We have found the data and we are on a simple page. Now let's get the quantity.
+	//It is not that important that we will break the function if we don't find it.
+	var qty = jQuery('[name="quantity"]').val();
+	if(qty){
+		info.qty = qty;
+	}
+	else{
+		info.qty = 1;
+	}
+
 	return info;
 }
 
@@ -294,5 +315,8 @@ window.kwipped_approve.get_woocart_information_composite = function(){
 		info.price = price;
 		info.model = model;
 	}
+
+	info.qty = 1;
+
 	return info;
 }

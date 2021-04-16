@@ -34,6 +34,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+2.2 =
+* Added functionality to properly change teaser rate and button properties in simple product page when the quantity changes.
+
 2.0.11 =
 * Completed ability to utilize composite products. Added technical
 
