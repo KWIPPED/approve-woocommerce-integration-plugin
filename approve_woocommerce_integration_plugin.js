@@ -221,9 +221,7 @@ window.kwipped_approve.get_woocart_information_variable = function(){
 	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();
 	if(add_to_total){
 			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
-			console.log(info.price);
 			info.price=parseFloat(info.price)+parseFloat(add_to_total);
-			console.log(info.price);
 	}
 
 	return info;
@@ -313,9 +311,7 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();
 	if(add_to_total){
 			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
-			console.log(info.price);
 			info.price=parseFloat(info.price)+parseFloat(add_to_total);
-			console.log(info.price);
 	}
 
 	return info;
@@ -351,9 +347,7 @@ window.kwipped_approve.get_woocart_information_composite = function(){
 	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();
 	if(add_to_total){
 			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
-			console.log(info.price);
 			info.price=parseFloat(info.price)+parseFloat(add_to_total);
-			console.log(info.price);
 	}
 
 	return info;
