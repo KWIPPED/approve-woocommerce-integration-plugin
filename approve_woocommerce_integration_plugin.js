@@ -165,6 +165,17 @@ jQuery(document).ready(function(){
 		jQuery('[name="quantity"]').change(function(){
 			window.kwipped_approve.update_approve_woocommerce_tags();
 		});
+		jQuery('[name="quantity"]').keyup(function(){
+			window.kwipped_approve.update_approve_woocommerce_tags();
+		});
+	}
+
+	//If there is a tag on the page with add-to-total, then we will watch if for changes.
+	if(jQuery('approve-woocommerce-add-to-total').length){
+		var add_to_total = jQuery('approve-woocommerce-add-to-total').get(0);
+		approve_set_mutation_watcher(add_to_total,function(){
+			window.kwipped_approve.update_approve_woocommerce_tags();
+		});
 	}
 });
 
@@ -205,6 +216,15 @@ window.kwipped_approve.get_woocart_information_variable = function(){
 	}
 
 	info.qty = 1;
+
+	//Is there any value on the page that needs to be added to the total?
+	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();
+	if(add_to_total){
+			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+			console.log(info.price);
+			info.price=parseFloat(info.price)+parseFloat(add_to_total);
+			console.log(info.price);
+	}
 
 	return info;
 }
@@ -289,6 +309,15 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 		info.qty = 1;
 	}
 
+	//Is there any value on the page that needs to be added to the total?
+	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();
+	if(add_to_total){
+			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+			console.log(info.price);
+			info.price=parseFloat(info.price)+parseFloat(add_to_total);
+			console.log(info.price);
+	}
+
 	return info;
 }
 
@@ -318,5 +347,22 @@ window.kwipped_approve.get_woocart_information_composite = function(){
 
 	info.qty = 1;
 
+	//Is there any value on the page that needs to be added to the total?
+	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();
+	if(add_to_total){
+			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
+			console.log(info.price);
+			info.price=parseFloat(info.price)+parseFloat(add_to_total);
+			console.log(info.price);
+	}
+
 	return info;
+}
+
+function approve_set_mutation_watcher(element,action){
+	var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+	var observer = new MutationObserver(function(mutations) {
+		action();
+	});
+	observer.observe(element,{childList:true});
 }

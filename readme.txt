@@ -34,6 +34,10 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+2.3 =
+* Added approve-woocommerce-add-to-total tag. This is needed in case there are custom functions on the page that modify the total of the purchase without 
+  changing the total of the product.Also, changed the quantity observer added in version 2.2 to also detect keyup events.
+
 2.2 =
 * Added functionality to properly change teaser rate and button properties in simple product page when the quantity changes.
 

@@ -3,7 +3,7 @@
 	Plugin Name: APPROVE Woocommerce Integration Plugin
 	Plugin URI: http://kwipped.com
 	description:May be used by APPROVE clients to create the necessary link to connect into the Approve cart from wordpress.
-	Version: 2.2
+	Version: 2.3
 	Author: Wellington Souza
 	Author URI: http://kwipped.com
 	License: GPL2
@@ -14,7 +14,7 @@
 	
 	class ApproveWoocommerceIntegrationPlugin{
 
-		private $version = "2.2";
+		private $version = "2.3";
 		private $test = false;
 
 		function __construct(){
