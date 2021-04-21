@@ -170,10 +170,18 @@ jQuery(document).ready(function(){
 		});
 	}
 
+	//***********************************************************************************
 	//If there is a tag on the page with add-to-total, then we will watch if for changes.
+	//***********************************************************************************
 	if(jQuery('approve-woocommerce-add-to-total').length){
 		var add_to_total = jQuery('approve-woocommerce-add-to-total').get(0);
 		approve_set_mutation_watcher(add_to_total,function(){
+			window.kwipped_approve.update_approve_woocommerce_tags();
+		});
+	}
+	if(jQuery('approve-woocommerce-add-to-model').length){
+		var add_to_model = jQuery('approve-woocommerce-add-to-model').get(0);
+		approve_set_mutation_watcher(add_to_model,function(){
 			window.kwipped_approve.update_approve_woocommerce_tags();
 		});
 	}
@@ -222,6 +230,11 @@ window.kwipped_approve.get_woocart_information_variable = function(){
 	if(add_to_total){
 			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
 			info.price=parseFloat(info.price)+parseFloat(add_to_total);
+	}
+	//Is there any descriptiopn on the page that needs to be added to the model?
+	var add_to_model = jQuery('approve-woocommerce-add-to-model').text();
+	if(add_to_model){
+			info.model+=" "+add_to_model;
 	}
 
 	return info;
@@ -313,6 +326,11 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
 			info.price=parseFloat(info.price)+parseFloat(add_to_total);
 	}
+	//Is there any descriptiopn on the page that needs to be added to the model?
+	var add_to_model = jQuery('approve-woocommerce-add-to-model').text();
+	if(add_to_model){
+			info.model+=" "+add_to_model;
+	}
 
 	return info;
 }
@@ -348,6 +366,11 @@ window.kwipped_approve.get_woocart_information_composite = function(){
 	if(add_to_total){
 			add_to_total = add_to_total.replace(/ /g,'').replace(/\$/g,'').replace(/,/g,'');
 			info.price=parseFloat(info.price)+parseFloat(add_to_total);
+	}
+	//Is there any descriptiopn on the page that needs to be added to the model?
+	var add_to_model = jQuery('approve-woocommerce-add-to-model').text();
+	if(add_to_model){
+			info.model+=" "+add_to_model;
 	}
 
 	return info;
