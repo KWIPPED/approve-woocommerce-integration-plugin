@@ -34,7 +34,7 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
-2.4 =
+2.5 =
 * Added  approve-woocommerce-add-to-model tag to complement approve-woocommerce-add-to-total.
 
 2.4 =
