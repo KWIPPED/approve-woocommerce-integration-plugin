@@ -267,7 +267,8 @@ window.kwipped_approve.get_woocart_information_simple = function(){
 			}
 		}
 		catch(error){
-			console.error("The APPROVE plugin could not parse the page.");
+			//Do nothing for now.
+			//console.error("The APPROVE plugin could not parse the page.");
 		}
 	});
 	//If the data was not found in structured data, we will try metadata on the page.
