@@ -223,7 +223,15 @@ window.kwipped_approve.get_woocart_information_variable = function(){
 		}
 	}
 
-	info.qty = 1;
+	//We have found the data on the variable product page. Now let's get the quantity.
+	//It is not that important that we will break the function if we don't find it.
+	var qty = jQuery('[name="quantity"]').val();
+	if(qty){
+		info.qty = qty;
+	}
+	else{
+		info.qty = 1;
+	}
 
 	//Is there any value on the page that needs to be added to the total?
 	var add_to_total = jQuery('approve-woocommerce-add-to-total').text();

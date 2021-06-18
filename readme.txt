@@ -34,6 +34,9 @@ More informatinon on how to integrate it into your Worpress site is available at
 Please visit https://github.com/KWIPPED/woocommerce-approve-plugin.
 
 == Changelog ==
+2.8 =
+* Fixed second bug causing quantity button not to update the teaser rate on variable product pages.
+
 2.7 =
 * Fixed bug causing quantity button not to update the teaser rate on variable product pages.
 
