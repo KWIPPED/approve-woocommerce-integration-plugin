@@ -161,7 +161,7 @@ jQuery(document).ready(function(){
 	});
 
 	//Quantity in simple product pages.
-	if(window.kwipped_approve.mode==="simple"){
+	if(window.kwipped_approve.mode==="simple" || window.kwipped_approve.mode==="variable"){
 		jQuery('[name="quantity"]').change(function(){
 			window.kwipped_approve.update_approve_woocommerce_tags();
 		});
